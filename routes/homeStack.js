@@ -8,7 +8,7 @@ const screens = {
     WelcomePage : {
         screen: WelcomePage,
         navigationOptions: {
-         title:'SitiTea',
+         title:'Home',
          
         }
     },LoginPage:{

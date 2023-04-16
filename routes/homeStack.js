@@ -6,17 +6,34 @@ import LoginPage from "../screens/login";
 import RevPage from "../screens/revPage";
 const screens = {
     WelcomePage : {
-        screen: WelcomePage
+        screen: WelcomePage,
+        navigationOptions: {
+         title:'SitiTea',
+         
+        }
     },LoginPage:{
         screen: LoginPage
-    },RevPage:{
+    },/* RevPage:{
         screen: RevPage
     }
-    
+ */    
 }
 
 
-const HomeStack = createStackNavigator(screens);
+const HomeStack = createStackNavigator(screens,{
+    defaultNavigationOptions: {
+        /* title: '', */
+        headerStyle: {
+            backgroundColor: '#fff',
+            
+            
+        },
+        /* cardStyle: {
+            backgroundColor: 'blue'
+        } */
+        
+    }
+});
 
 
 export default createAppContainer(HomeStack);

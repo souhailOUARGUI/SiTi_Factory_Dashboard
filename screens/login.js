@@ -121,9 +121,14 @@ const LoginPage = ({navigation}) => {
             <Ellipse cx={width / 2} rx={height} ry={height + 100} />
           </ClipPath>
           <Image
-            href={require("../assets/images/")}
-            width={width + 100}
-            height={height + 100}
+            // href={require("../assets/images/login-background.jpg")}
+            source={require("../assets/images/login-background.jpg")}
+            // width={width}
+            style={{
+                width: width+100 ,height: height+100
+            }} 
+            // height={height}
+            
             preserveAspectRatio="xMidYMid slice"
             clipPath="url(#clipPathId)"
           />

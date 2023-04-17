@@ -25,12 +25,11 @@ const HomeStack = createStackNavigator(screens,{
         /* title: '', */
         headerStyle: {
             backgroundColor: '#fff',
-            
-            
+   
         },
-        /* cardStyle: {
+        cardStyle: {
             backgroundColor: 'blue'
-        } */
+        }
         
     }
 });

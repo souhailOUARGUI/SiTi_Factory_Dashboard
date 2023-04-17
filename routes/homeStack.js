@@ -9,6 +9,7 @@ const screens = {
         screen: WelcomePage,
         navigationOptions: {
          title:'SitiTea',
+        
          
         }
     },LoginPage:{
@@ -24,10 +25,13 @@ const screens = {
 const HomeStack = createStackNavigator(screens,{
     defaultNavigationOptions: {
         /* title: '', */
+        headerTitleAlign : 'center',
+        headerTitleStyle:{
+            fontSize: 30,
+            fontWeight: 'bold'
+        },
         headerStyle: {
             backgroundColor: '#fff',
-            
-            
         },
         /* cardStyle: {
             backgroundColor: 'blue'

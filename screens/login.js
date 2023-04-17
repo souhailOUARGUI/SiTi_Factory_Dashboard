@@ -25,7 +25,8 @@ import Animated, {
     withDelay,
     runOnJS,
     withSequence,
-    withSpring
+    withSpring,
+    log
   } from "react-native-reanimated";
   
 
@@ -99,20 +100,28 @@ const LoginPage = ({navigation}) => {
     }
   })
 
-  const loginHandler = () => {
+  const FirstloginHandler = () => {
     imagePosition.value = 0;
-    if (isRegistering) {
+    /* if (isRegistering) {
       runOnJS(setIsRegistering)(false);
-    }
+    } */
+    
   };
+  
+  const loginHandler = ()=> {
+    console.log('logged in');
 
-  const registerHandler = () => {
+    formButtonScale.value = withSequence(withSpring(1.2), withSpring(1))
+  }
+
+
+/*   const registerHandler = () => {
     imagePosition.value = 0;
     if (!isRegistering) {
       runOnJS(setIsRegistering)(true);
     }
   };
-
+ */
   return (
     <Animated.View style={lstyles.lcontainer}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
@@ -121,16 +130,12 @@ const LoginPage = ({navigation}) => {
             <Ellipse cx={width / 2} rx={height} ry={height + 100} />
           </ClipPath>
           <Image
-            // href={require("../assets/images/login-background.jpg")}
             source={require("../assets/images/login-background.jpg")}
-            // width={width}
             style={{
-                width: width+100 ,height: height+100
-            }} 
-            // height={height}
-            
-            preserveAspectRatio="xMidYMid slice"
-            clipPath="url(#clipPathId)"
+                width: width+100 ,height: height+100,
+            }}
+            // preserveAspectRatio="xMidYMid slice"
+            // clipPath="url(#clipPathId)"
           />
         </Svg>
         <Animated.View
@@ -141,37 +146,27 @@ const LoginPage = ({navigation}) => {
       </Animated.View>
       <View style={lstyles.lbottomContainer}>
         <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={lstyles.lbutton} onPress={loginHandler}>
+          <Pressable style={lstyles.lbutton} onPress={FirstloginHandler}>
             <Text style={lstyles.lbuttonText}>LOG IN</Text>
           </Pressable>
         </Animated.View>
-        <Animated.View style={buttonsAnimatedStyle}>
-          <Pressable style={lstyles.lbutton} onPress={registerHandler}>
-            <Text style={lstyles.lbuttonText}>REGISTER</Text>
-          </Pressable>
-        </Animated.View>
+        
         <Animated.View style={[lstyles.lformInputContainer, formAnimatedStyle]}>
           <TextInput
             placeholder="Email"
             placeholderTextColor="black"
             style={lstyles.ltextInput}
           />
-          {isRegistering && (
-            <TextInput
-              placeholder="Full Name"
-              placeholderTextColor="black"
-              style={lstyles.ltextInput}
-            />
-          )}
+          
           <TextInput
             placeholder="Password"
             placeholderTextColor="black"
             style={lstyles.ltextInput}
           />
           <Animated.View style={[lstyles.lformButton, formButtonAnimatedStyle]}>
-            <Pressable onPress={() => formButtonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
+            <Pressable onPress={ loginHandler}>
               <Text style={lstyles.lbuttonText}>
-                {isRegistering ? "REGISTER" : "LOG IN"}
+                LOG IN
               </Text>
             </Pressable>
           </Animated.View>

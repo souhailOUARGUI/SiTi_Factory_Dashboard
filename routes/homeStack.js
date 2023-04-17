@@ -8,7 +8,7 @@ const screens = {
     WelcomePage : {
         screen: WelcomePage,
         navigationOptions: {
-         title:'Home',
+         title:'SitiTea',
          
         }
     },LoginPage:{
@@ -18,6 +18,7 @@ const screens = {
     }
  */    
 }
+
 
 
 const HomeStack = createStackNavigator(screens,{

@@ -27,9 +27,9 @@ const HomeStack = createStackNavigator(screens,{
             backgroundColor: '#fff',
    
         },
-        cardStyle: {
+        /* cardStyle: {
             backgroundColor: 'blue'
-        }
+        } */
         
     }
 });

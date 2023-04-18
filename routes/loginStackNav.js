@@ -2,16 +2,15 @@ import { createStackNavigator } from "react-navigation-stack";
 
 import { createAppContainer } from 'react-navigation';
 import WelcomePage from "../screens/welcomePage";
+import LoginPage from "../screens/login";
 import MachineStats from "../screens/machineStats";
 const screens = {
-    WelcomePage : {
-        screen: WelcomePage,
+    LoginPage : {
+        screen: LoginPage,
         navigationOptions: {
-         title:'SitiTea',
-         
-        
-         
-        }
+         headerShown:false,}
+    },WelcomePage:{
+        screen: WelcomePage
     },MachineStats:{
         screen: MachineStats,
         navigationOptions:{}
@@ -20,7 +19,7 @@ const screens = {
 
 
 
-const HomeStack = createStackNavigator(screens,{
+const LoginStackNav = createStackNavigator(screens,{
     defaultNavigationOptions: {
         /* title: '', */
         headerTitleAlign : 'center',
@@ -30,12 +29,14 @@ const HomeStack = createStackNavigator(screens,{
         },
         headerStyle: {
             backgroundColor: '#fff',
-            
-            
         },
+        
+        /* cardStyle: {
+            backgroundColor: 'blue'
+        } */
         
     }
 });
 
 
-export default createAppContainer(HomeStack);
+export default createAppContainer(LoginStackNav);

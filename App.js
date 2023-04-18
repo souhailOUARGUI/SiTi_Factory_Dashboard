@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,ImageBackground,SafeAreaView,Dimensions } from 'react-native';
 import WelcomePage from './screens/welcomePage';
-import Navigator from './routes/homeStack';
+import Navigator from './routes/loginStackNav';
 import LoginPage from './screens/login';
-export default function App() {
+import ChartTest from './screens/charts/charttest';
+export  default function App() {
   return (
     <View style={styles.container}>
       {/* <WelcomePage/> */}
-      {/* <Navigator/> */}
-      <LoginPage></LoginPage>
+      <Navigator/>
+      {/* <ChartTest/> */}
+      {/* <LoginPage/> */}
     </View>
   );
 }

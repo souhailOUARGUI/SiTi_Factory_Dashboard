@@ -11,7 +11,7 @@ const {height,width} = Dimensions.get("window");
 const WelcomePage = ({navigation}) => {
 
 const loginPressHandler = () => {
-    navigation.navigate('LoginPage');
+    navigation.navigate('MachineStats');
 }
 
 
@@ -88,7 +88,7 @@ const loginPressHandler = () => {
                     textAlign: 'center',
                     fontWeight: '600'
                     }} >
-                        Login
+                        Machines
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -1,18 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,ImageBackground,SafeAreaView,Dimensions,Image,TouchableOpacity,FlatList,
+import { StyleSheet, Text, View,ImageBackground,SafeAreaView,Dimensions,Image,
     TextInput,
     Pressable, } from 'react-native';
 import React, { useState } from 'react';
-
-
-import Spacing from '../constants/Spacing' 
-import FontSize from '../constants/FontSize';
-import Colors from '../constants/Colors';
-import Font from '../constants/Font';
-
-
-
-///////////////////////////////////////////////////////////////////
 
 import lstyles from './lstyles';
 import Svg, {  Ellipse, ClipPath } from "react-native-svg";
@@ -29,23 +18,7 @@ import Animated, {
     log
   } from "react-native-reanimated";
   
-
-
-
-
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////
-
 const LoginPage = ({navigation}) => {
-
-   ////////////////// test code ////////////////////////////
-
 
     const { height, width } = Dimensions.get("window");
   const imagePosition = useSharedValue(1);
@@ -109,19 +82,12 @@ const LoginPage = ({navigation}) => {
   };
   
   const loginHandler = ()=> {
-    console.log('logged in');
+    
+    formButtonScale.value = withSequence(withSpring(1.2), withSpring(1));
+    navigation.navigate('WelcomePage');
 
-    formButtonScale.value = withSequence(withSpring(1.2), withSpring(1))
   }
 
-
-/*   const registerHandler = () => {
-    imagePosition.value = 0;
-    if (!isRegistering) {
-      runOnJS(setIsRegistering)(true);
-    }
-  };
- */
   return (
     <Animated.View style={lstyles.lcontainer}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
@@ -134,8 +100,7 @@ const LoginPage = ({navigation}) => {
             style={{
                 width: width+100 ,height: height+100,
             }}
-            // preserveAspectRatio="xMidYMid slice"
-            // clipPath="url(#clipPathId)"
+
           />
         </Svg>
         <Animated.View
@@ -176,44 +141,6 @@ const LoginPage = ({navigation}) => {
   );
 
 
-
-
-
-   ////////////////// test code ////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*     return (
-
-    <View>
-        <Text style={{
-            fontSize:40,
-            textAlign:'center',
-            padding: 10
-        }} >
-            Login Page ('Under Construction')
-        </Text>
-    </View>
-) */
 }
 
 

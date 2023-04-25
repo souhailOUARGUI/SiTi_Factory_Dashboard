@@ -96,7 +96,7 @@ const LoginPage = ({navigation}) => {
             <Ellipse cx={width / 2} rx={height} ry={height + 100} />
           </ClipPath>
           <Image
-            source={require("../assets/images/login-background.jpg")}
+            source={require("../assets/images/green_surface.jpg")}
             style={{
                 width: width+100 ,height: height+100,
             }}

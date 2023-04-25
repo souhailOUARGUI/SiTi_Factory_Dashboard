@@ -29,10 +29,10 @@ return(
   <View>
     <Text style={{
       margin: 40,
-      fontSize: 50,
+      fontSize: 50,  
       textAlign: 'center',
     }} >
-       s
+       Machines
     </Text>
 
     <ViewPager

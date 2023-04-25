@@ -25,7 +25,7 @@ const lstyles = StyleSheet.create({
   },
   lbottomContainer: {
     justifyContent: 'center',
-    height: height / 3,
+    height: height / 4,
   },
   ltextInput: {
     height: 50,

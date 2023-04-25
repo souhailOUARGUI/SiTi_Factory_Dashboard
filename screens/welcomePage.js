@@ -17,7 +17,9 @@ const loginPressHandler = () => {
 
     return (
         <SafeAreaView>
-            <View>
+            <View style={{
+                backgroundColor:'#F6F6C9'
+            }} >
             <ImageBackground
             style={styles.bImage}
             resizeMode='contain'

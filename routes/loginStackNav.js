@@ -4,17 +4,18 @@ import { createAppContainer } from 'react-navigation';
 import WelcomePage from "../screens/welcomePage";
 import LoginPage from "../screens/login";
 import MachineStats from "../screens/machineStats";
+import NewLogin from "../screens/newLogin";
 const screens = {
-    LoginPage : {
-        screen: LoginPage,
+     NewLogin: {
+        screen: NewLogin,
         navigationOptions: {
          headerShown:false,}
-    },WelcomePage:{
-        screen: WelcomePage
     },MachineStats:{
         screen: MachineStats,
         navigationOptions:{}
-    }, 
+    }/* ,WelcomePage:{
+        screen: WelcomePage
+    } */
 }
 
 

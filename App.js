@@ -4,6 +4,8 @@ import WelcomePage from './screens/welcomePage';
 import Navigator from './routes/loginStackNav';
 import LoginPage from './screens/login';
 import ChartTest from './screens/charts/charttest';
+import TestPaper from './screens/charts/testPaper';
+import NewLogin from './screens/newLogin';
 export  default function App() {
   return (
     <View style={styles.container}>
@@ -11,6 +13,7 @@ export  default function App() {
       <Navigator/>
       {/* <ChartTest/> */}
       {/* <LoginPage/> */}
+      {/* <NewLogin/> */}
     </View>
   );
 }

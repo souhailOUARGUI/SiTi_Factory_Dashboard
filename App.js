@@ -6,6 +6,8 @@ import LoginPage from './screens/login';
 import ChartTest from './screens/charts/charttest';
 import TestPaper from './screens/charts/testPaper';
 import NewLogin from './screens/newLogin';
+import MachineStats from './screens/machineStats';
+import Machine from './screens/machine';
 export  default function App() {
   return (
     <View style={styles.container}>
@@ -13,10 +15,19 @@ export  default function App() {
       <Navigator/>
       {/* <ChartTest/> */}
       {/* <LoginPage/> */}
+      {/* <MachineStats/> */}
       {/* <NewLogin/> */}
+      
     </View>
   );
 }
+
+ 
+
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {

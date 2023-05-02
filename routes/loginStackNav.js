@@ -5,6 +5,7 @@ import WelcomePage from "../screens/welcomePage";
 import LoginPage from "../screens/login";
 import MachineStats from "../screens/machineStats";
 import NewLogin from "../screens/newLogin";
+import Machine from "../screens/machine";
 const screens = {
      NewLogin: {
         screen: NewLogin,
@@ -13,7 +14,11 @@ const screens = {
     },MachineStats:{
         screen: MachineStats,
         navigationOptions:{}
-    }/* ,WelcomePage:{
+    },Machine:{
+        screen: Machine,
+        navigationOptions:{}
+    },
+    /* ,WelcomePage:{
         screen: WelcomePage
     } */
 }
@@ -31,6 +36,10 @@ const LoginStackNav = createStackNavigator(screens,{
         headerStyle: {
             backgroundColor: '#fff',
         },
+        
+
+        
+        
         
         /* cardStyle: {
             backgroundColor: 'blue'

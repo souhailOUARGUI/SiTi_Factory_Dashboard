@@ -1,39 +1,95 @@
 import { StyleSheet, Text, View,ImageBackground,SafeAreaView,Dimensions,Image,TouchableWithoutFeedback,
     TextInput,
     Pressable,Keyboard } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Checkbox } from 'react-native-paper';
 
-
+import axios from 'axios';
 const { height, width } = Dimensions.get("window");
 
-
-
+const baseUrl = 'http://gounane.ovh:8000/api/v1';
+ 
 const NewLogin = ({navigation}) =>{
-   
-    const [checked, setChecked] = useState(false);
 
-    const loginHandler = () => {
-    navigation.navigate('MachineStats');
+  const [machineStates, setMachineStates] = useState([
+    { id: 1, name: 'Machine 1', state: 'working', startHour: 8, endHour: 16 },
+    { id: 2, name: 'Machine 2', state: 'not working', startHour: 8, endHour: 12 },
+    { id: 3, name: 'Machine 3', state: 'working', startHour: 10, endHour: 14 },
+    { id: 4, name: 'Machine 4', state: 'not working', startHour: 12, endHour: 16 },
+  ]);
+
+
+
+
+  const renderHour = (hour) => {
+    // Render the hour as a string with a leading zero if needed
+    return `${hour.toString().padStart(2, '0')}:00`;
+  };
+
+//////////////////////////////////
+const renderMachineState = ({ item: machineState }) => {
+  const stateColor = machineState.state === 'working' ? '#8DC63F' : '#FF0000';
+  const hourItems = [];
+
+  // Iterate over the hours and create a View for each hour
+  for (let hour = machineState.startHour; hour <= machineState.endHour; hour++) {
+    const hourItem = (
+      <View key={hour} style={[styles.hourItem, { backgroundColor: stateColor }]} />
+    );
+    hourItems.push(hourItem);
+  }
+
+  return (
+    <View style={styles.machineStateContainer}>
+      <View style={styles.machineStateName}>
+        <Text>{machineState.name}</Text>
+      </View>
+      <View style={styles.machineStateHours}>
+        {hourItems}
+      </View>
+    </View>
+  );
+};
+
+
+
+
+
+const data = {
+  email: 'super_admin@siti.com',
+  password: 'sititea1234'
+};
+
+
+
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+
+    const loginHandler = async () => {
+    console.log('pressed');
+    axios.post(`${baseUrl}/users/login`, data)
+    .then(response => {
+      console.log(response.data);
+      navigation.navigate('MachineStats');
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 
 
     return(
       <ImageBackground 
-      source={require('../assets/images/green_surface.jpg')} 
+      source={require('../assets/images/green_surface_reduced.jpg')} 
       blurRadius={10}
       style={{flex: 1}}>
-
-      
         <TouchableWithoutFeedback  
         onPress={()=> {
             Keyboard.dismiss();
         }}>
-
-        
         <View style={{
             marginTop: 40
             ,flex:1,
@@ -57,15 +113,17 @@ const NewLogin = ({navigation}) =>{
     <Text style={{
         fontSize:50,
         fontWeight:'700',
-        marginTop:'40%',
-        color:'white'
+        marginTop:'30%',
+        color:'white',
+        // marginBottom:'10%'
     }} >
         SITI-SCADA
     </Text>
+
     <Text style={{
-        fontSize:20,
-        fontWeight:'700',
-        // marginTop:'45%',
+        fontSize:18,
+        fontWeight:'600',
+        marginBottom:'10%',
         color:'white'
     }} >
         Supervisory Control And Data Acquisition
@@ -84,7 +142,7 @@ const NewLogin = ({navigation}) =>{
     placeholderTextColor={'white'}
     placeholder='Email ID'
   onSubmitEditing={() => Keyboard.dismiss()}
-    
+  onChangeText={(e)=>setEmail(e)}
     leftIcon={
       <Icon
         name='home'
@@ -102,7 +160,7 @@ const NewLogin = ({navigation}) =>{
     color: 'white'
   }}
     placeholder='Password'
-    onChangeText={(txt)=>console.log(txt)}
+    onChangeText={(pass)=>setPass(pass)}
     secureTextEntry={true}
     placeholderTextColor={'#F5FEFD'}
     

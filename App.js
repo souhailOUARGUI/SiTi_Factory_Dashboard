@@ -17,6 +17,8 @@ export  default function App() {
       {/* <LoginPage/> */}
       {/* <MachineStats/> */}
       {/* <NewLogin/> */}
+      {/* <Machine/> */}
+
       
     </View>
   );

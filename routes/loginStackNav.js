@@ -23,8 +23,6 @@ const screens = {
     } */
 }
 
-
-
 const LoginStackNav = createStackNavigator(screens,{
     defaultNavigationOptions: {
         /* title: '', */

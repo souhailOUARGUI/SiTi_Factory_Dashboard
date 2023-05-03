@@ -14,7 +14,9 @@ const MachineTimetableRow = ({ hours, machineStates }) => {
       hours &&
       hours.map((hour) => (
         <View style={{margin: 0,
-          flexDirection: 'row', alignItems: 'center' }}>
+          flexDirection: 'row', alignItems: 'center' }}
+          key={hour.id}
+          >
          
    
          <View style={{marginHorizontal: 10, 
@@ -23,7 +25,7 @@ const MachineTimetableRow = ({ hours, machineStates }) => {
            <Text
            style={ {fontSize: 14, textAlign: 'center',
            fontWeight: 'bold' ,}}
-           >{hour}:00</Text>
+           >{hour.timestamp}:00</Text>
          </View>
          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center',alignItems:'center' }}>
            {minutes.map((minute) => {
@@ -43,6 +45,8 @@ const MachineTimetableRow = ({ hours, machineStates }) => {
                    width: 5,
                    marginHorizontal: 0,
                    backgroundColor,
+                   borderBottomColor: 'black',
+                   borderBottomWidth: 1,
                  }}
                />
              );

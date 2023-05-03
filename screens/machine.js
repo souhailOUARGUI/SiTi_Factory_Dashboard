@@ -159,6 +159,11 @@ export default function Machine({navigation}) {
         setCoups(response.data.data.coups);
         const date = new Date(response.data.data.coups[0].createdAt);
         // console.log(date.getUTCHours());
+
+
+
+
+    // *********************   timeline data treatement *********************
         const Hours = Array.from({ length: 24 }, (_, i) => ({
           hour: i,
           minutes: Array.from({ length: 60 }, (_, j) => ({
@@ -172,35 +177,34 @@ const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
   const date = new Date(item.createdAt);
   const hour = date.getUTCHours();
   const minute = date.getMinutes();
-  console.log(hour);
+  /* console.log(hour);
   console.log(minute);
-  console.log(item);
-  
-  acc[hour].minutes[minute].coups.push({min:minute, coups:item.coups_min});
+  console.log(item); */
+
+  acc[hour].minutes[minute].coups.push({col:minute!=0?"green":"red", coup:item.coups_min});
   return acc;
 }, Hours);
-   console.log(HoursWithCoups[0].minutes[33]);
 
-      // const hours = [];
-      // const minutes = [];
-      // response.data.data.coups.forEach(coup => {
-      //   const date = new Date(coup.createdAt);
-      //   // for (let index = 0; index < 60; index++) {
-      //   //   if (date.getMinutes() == index) {
-      //   //     minutes.push(date.getUTCMinutes());
-      //   //   }else{
-      //   //     //minutes.push(index);
-      //   //   }
-          
-      //   // }
-      //   minutes.push(date.getUTCMinutes());
-      //   hours.push(minutes);
-      
+    HoursWithCoups.forEach((hour) => {
+      hour.minutes.forEach((minute) => {
+        if (minute.coups.length === 0) {
+          minute.coups.push({ min: "no data",col:"black" });
+        }else{
+          // minute.coups = [minute.coups[0]];
+        }
+      });
+    });
+  console.log(HoursWithCoups[7].minutes[4]);
+  
+
 
     }
     ).catch(error => {
         console.log(error);
     });
+
+    
+
 
     }, [])
 

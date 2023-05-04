@@ -31,94 +31,6 @@ export default function Machine({navigation}) {
 
     ///////////////////////////////////////////////////////////////
 
-    const hours = [{id:1, timestamp: 0},
-        {id:2, timestamp: 1},
-        {id:3, timestamp: 2},
-        {id:4, timestamp: 3},
-        {id:5, timestamp: 4},
-        {id:6, timestamp: 5},
-        {id:7, timestamp: 6},
-        {id:8, timestamp: 7},
-        {id:9, timestamp: 8},
-        {id:10, timestamp:9},
-        {id:11, timestamp: 10},
-        {id:12, timestamp: 11},
-        {id:13, timestamp: 12},
-        {id:14, timestamp: 13},
-        {id:15, timestamp: 14},
-        {id:16, timestamp: 15},
-        {id:17, timestamp: 16},
-        {id:18, timestamp: 17},
-        {id:19, timestamp: 18},
-        {id:20, timestamp: 19},
-        {id:21, timestamp: 20},
-        {id:22, timestamp: 21},
-        {id:23, timestamp: 22},
-     ]
-    const machineStates = [
-      
-        'working',
-        'working',
-        'working',
-         
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-         
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',  
-        'working',
-        
-         'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'not working',
-        'not working','not working',
-        'not working',
-        'not working','not working',  
-        
-        'not working','working',
-        'working',
-        'working',
-        
-        'working',
-        'working',
-        'working',
-        'working',
-        'not working','not working',
-        'not working',  
-        'working',
-        'working',
-        'not working',
-        'not working',
-        'not working',  
-        'not working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'working',
-        'not working',
-        'not working',
-        'not working',  'not working',
-        'working',
-        'working',
-        'working',
-        'not working',
-      ];
 
     /////////////////////////////////////////////
     const [machine, setMachine] = useState({});
@@ -127,6 +39,21 @@ export default function Machine({navigation}) {
     const [topics , setTopics] = useState({});
     const [coups , setCoups] = useState([]);
     const [TimeLineData , setTimeLineData] = useState([]);
+    const [timeLineDateStart,setTimeLineDateStart] = useState('2023-05-03');
+    const [timeLineDateEnd,setTimeLineDateEnd] = useState('2023-05-04');
+
+
+    //      get current day  date :
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  const nextDay = new Date();
+  nextDay.setDate(today.getDate() + 1);
+  const formattedNextDay = nextDay.toISOString().substr(0, 10);
+  
     // const MachineId = null;
       const MachineId = navigation.getParam('id');
     useEffect(() => {
@@ -146,12 +73,8 @@ export default function Machine({navigation}) {
         setDevice(response.data.data.machine.device);
         setTopics(response.data.data.machine.topics);
     });
-
-
-    //              get coups 
-
-
-    axios.get(`${baseUrl}/machines/${MachineId}/coups?sort=+createdAt&createdAt[gte]=2023-05-02&createdAt[lt]=2023-05-03`,
+    //              get coups of machine
+    axios.get(`${baseUrl}/machines/${MachineId}/coups?sort=+createdAt&createdAt[gte]=${formattedDate}&createdAt[lt]=${formattedNextDay}`,
     //send jwt token in header
     { headers: { Authorization: `Bearer ${token}` } },
       ).then(response => {
@@ -159,9 +82,8 @@ export default function Machine({navigation}) {
         // console.log( JSON.stringify(response.data.data.coups[0]));
         setCoups(response.data.data.coups);
         const date = new Date(response.data.data.coups[0].createdAt);
+        
         // console.log(date.getUTCHours());
-
-
 
 
     // *********************   timeline data treatement *********************
@@ -178,26 +100,29 @@ export default function Machine({navigation}) {
   const date = new Date(item.createdAt);
   const hour = date.getUTCHours();
   const minute = date.getMinutes();
-  /* console.log(hour);
-  console.log(minute);
-  console.log(item); */
+  // console.log(hour);
+  // console.log(minute);
+  // console.log(item);
 
-  acc[hour].minutes[minute].coups.push({col:minute!=0?"green":"red", coup:item.coups_min});
+  acc[hour].minutes[minute].coups.push({col:item.coups_min==0?"red":item.coups_min<=30?'yellow':'green', coup:item.coups_min});
   return acc;
 }, Hours);
-
     HoursWithCoups.forEach((hour) => {
       hour.minutes.forEach((minute) => {
         if (minute.coups.length === 0) {
-          minute.coups.push({ min: "no data",col:"black" });
+          minute.coups.push({ min: "no data",col:"#D8D8D8" });
         }else{
            minute.coups = [minute.coups[0]];
           
         }
       });
     });
-  console.log(HoursWithCoups[7].minutes[49]);
+  console.log(HoursWithCoups[7].minutes[1]);
   setTimeLineData(HoursWithCoups);
+  console.log(formattedDate);
+  console.log(formattedNextDay);
+
+  // console.log(timeLineDateStart);
 
 
   ////////////////////////////////////
@@ -232,7 +157,8 @@ export default function Machine({navigation}) {
               }} >
                 TimeLine Chart
               </Text>
-            <MachineTimetableRow hours={hours} machineStates= {machineStates} 
+            <MachineTimetableRow 
+            // hours={hours} machineStates= {machineStates} 
             TimeLineData={TimeLineData}
               // style={styles.machineStateContainer}
               />

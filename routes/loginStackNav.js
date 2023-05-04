@@ -13,7 +13,9 @@ const screens = {
          headerShown:false,}
     },MachineStats:{
         screen: MachineStats,
-        navigationOptions:{}
+        navigationOptions:{
+            title: 'Dashboard',
+        }
     },Machine:{
         screen: Machine,
         navigationOptions:{}

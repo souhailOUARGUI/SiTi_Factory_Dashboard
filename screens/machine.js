@@ -82,8 +82,6 @@ export default function Machine({navigation}) {
         // console.log( JSON.stringify(response.data.data.coups[0]));
         setCoups(response.data.data.coups);
         const date = new Date(response.data.data.coups[0].createdAt);
-        
-        // console.log(date.getUTCHours());
 
 
     // *********************   timeline data treatement *********************
@@ -95,6 +93,11 @@ export default function Machine({navigation}) {
           }))
         }));
 
+
+        //     current time 
+        const now = new Date();
+        const currentHour = now.getUTCHours();
+        const currentMinute = now.getUTCMinutes();
         
   const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
   const date = new Date(item.createdAt);
@@ -103,10 +106,14 @@ export default function Machine({navigation}) {
   // console.log(hour);
   // console.log(minute);
   // console.log(item);
+  
 
-  acc[hour].minutes[minute].coups.push({col:item.coups_min==0?"red":item.coups_min<=30?'yellow':'green', coup:item.coups_min});
+
+
+   acc[hour].minutes[minute].coups.push({col:item.coups_min==0?"red":item.coups_min<=30?'yellow':'green', coup:item.coups_min});
   return acc;
 }, Hours);
+  //           coloring minutes with no data
     HoursWithCoups.forEach((hour) => {
       hour.minutes.forEach((minute) => {
         if (minute.coups.length === 0) {
@@ -117,32 +124,43 @@ export default function Machine({navigation}) {
         }
       });
     });
-  console.log(HoursWithCoups[7].minutes[1]);
+
+
+// set colors for future time
+
+for (let h = 0; h < HoursWithCoups.length; h++) {
+  for (let m = 0; m < HoursWithCoups[h].minutes.length; m++) {
+    if ( h > currentHour || (h == currentHour &&  m > currentMinute)) {
+      HoursWithCoups[h].minutes[m].coups.forEach((coup) => {
+        
+        coup.col = "white";
+        
+      });
+    }
+  }
+}
+
   setTimeLineData(HoursWithCoups);
-  console.log(formattedDate);
-  console.log(formattedNextDay);
 
-  // console.log(timeLineDateStart);
+  console.log(HoursWithCoups[7].minutes[1]);
+  // console.log(formattedDate);
+  // console.log(formattedNextDay);
+  console.log(currentHour);
+  console.log(currentMinute);
+  console.log(TimeLineData[currentHour].minutes[6]);
 
+  
 
   ////////////////////////////////////
     }
     ).catch(error => {
         console.log(error);
     });
-
-    
-
-
     }, [])
-
-
     return (
         <ScrollView 
         style ={styles.container}
         >
-
-
 
         <View >
             <Text

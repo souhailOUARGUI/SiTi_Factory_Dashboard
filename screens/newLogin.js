@@ -117,7 +117,7 @@ const data = {
         color:'white',
         // marginBottom:'10%'
     }} >
-        SITI-SCADA
+        SITI
     </Text>
 
     <Text style={{

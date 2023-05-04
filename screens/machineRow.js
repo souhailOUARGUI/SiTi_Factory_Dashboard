@@ -1,8 +1,11 @@
 import React from 'react';
 import { View,Text,StyleSheet } from 'react-native';
-
-const MachineTimetableRow = ({ hours, machineStates }) => {
-  const minutes = Array.from({ length: 60 }, (_, i) => i);
+import { Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('window');
+const MachineTimetableRow = ({ 
+  // hours, machineStates,
+  TimeLineData }) => {
+  // const minutes = Array.from({ length: 60 }, (_, i) => i);
 
   return (
     <View
@@ -11,40 +14,32 @@ const MachineTimetableRow = ({ hours, machineStates }) => {
     }}
     >
     {
-      hours &&
-      hours.map((hour) => (
+      TimeLineData &&
+      TimeLineData.map((hour) => (
         <View style={{margin: 0,
           flexDirection: 'row', alignItems: 'center' }}
-          key={hour.id}
+          key={hour.hour}
           >
-         
-   
-         <View style={{marginHorizontal: 10, 
-           width: 60, alignItems: 'center', justifyContent: 'center'
+         <View style={{marginHorizontal: 0, 
+           width: width/10, alignItems: 'center', justifyContent: 'center',
+           
             }}>
            <Text
            style={ {fontSize: 14, textAlign: 'center',
            fontWeight: 'bold' ,}}
-           >{hour.timestamp}:00</Text>
+           >{hour.hour}:00</Text>
          </View>
          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center',alignItems:'center' }}>
-           {minutes.map((minute) => {
-             const machineState = machineStates[minute];
-             let backgroundColor = 'gray';
-             if (machineState === 'working') {
-               backgroundColor = 'green';
-             } else if (machineState === 'not working') {
-               backgroundColor = 'red';
-             }
+           {hour.minutes.map((minute) => {
              return (
                <View
-                 key={minute}
+                 key={minute.minute}
                  style={{
                    //  flex: 1,
-                   height: 30,
-                   width: 5,
+                   height: height/ 25,
+                   width: width / 68,
                    marginHorizontal: 0,
-                   backgroundColor,
+                   backgroundColor: minute.coups[0].col,
                    borderBottomColor: 'black',
                    borderBottomWidth: 1,
                  }}
@@ -54,15 +49,12 @@ const MachineTimetableRow = ({ hours, machineStates }) => {
          </View>
        </View>
       ))
-
     }
     </View>
-    
   );
 };
 
 export default MachineTimetableRow;
-
 
 const styles = StyleSheet.create({
   HourRow: {
@@ -71,7 +63,4 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 2,
   },
-
-
-  
 })

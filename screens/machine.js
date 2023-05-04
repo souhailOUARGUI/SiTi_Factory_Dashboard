@@ -126,6 +126,7 @@ export default function Machine({navigation}) {
     const  [device , setDevice] = useState({});
     const [topics , setTopics] = useState({});
     const [coups , setCoups] = useState([]);
+    const [TimeLineData , setTimeLineData] = useState([]);
     // const MachineId = null;
       const MachineId = navigation.getParam('id');
     useEffect(() => {
@@ -173,7 +174,7 @@ export default function Machine({navigation}) {
         }));
 
         
-const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
+  const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
   const date = new Date(item.createdAt);
   const hour = date.getUTCHours();
   const minute = date.getMinutes();
@@ -190,14 +191,16 @@ const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
         if (minute.coups.length === 0) {
           minute.coups.push({ min: "no data",col:"black" });
         }else{
-          // minute.coups = [minute.coups[0]];
+           minute.coups = [minute.coups[0]];
+          
         }
       });
     });
-  console.log(HoursWithCoups[7].minutes[4]);
-  
+  console.log(HoursWithCoups[7].minutes[49]);
+  setTimeLineData(HoursWithCoups);
 
 
+  ////////////////////////////////////
     }
     ).catch(error => {
         console.log(error);
@@ -230,6 +233,7 @@ const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
                 TimeLine Chart
               </Text>
             <MachineTimetableRow hours={hours} machineStates= {machineStates} 
+            TimeLineData={TimeLineData}
               // style={styles.machineStateContainer}
               />
 

@@ -11,13 +11,15 @@ const {height,width} = Dimensions.get("window");
 const WelcomePage = ({navigation}) => {
 
 const loginPressHandler = () => {
-    navigation.navigate('LoginPage');
+    navigation.navigate('MachineStats');
 }
 
 
     return (
         <SafeAreaView>
-            <View>
+            <View style={{
+                backgroundColor:'#F6F6C9'
+            }} >
             <ImageBackground
             style={styles.bImage}
             resizeMode='contain'
@@ -88,7 +90,7 @@ const loginPressHandler = () => {
                     textAlign: 'center',
                     fontWeight: '600'
                     }} >
-                        Login
+                        Machines
                     </Text>
                 </TouchableOpacity>
             </View>

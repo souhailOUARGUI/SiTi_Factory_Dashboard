@@ -21,6 +21,7 @@ import { log, min } from 'react-native-reanimated';
 import { Use } from 'react-native-svg';
 import axios from 'axios';
 import MachineTimetableRow from './machineRow';
+import StoppageComp from './stoppages/stoppageComp';
 
 const baseUrl = 'http://gounane.ovh:8000/api/v1';
 
@@ -30,10 +31,12 @@ const baseUrl = 'http://gounane.ovh:8000/api/v1';
 export default function Machine({navigation}) {
 
     ///////////////////////////////////////////////////////////////
+    const stoppagePeriods = [];
 
 
     /////////////////////////////////////////////
     const [machine, setMachine] = useState({});
+    const [stoppages, setStoppages] = useState([]);
     const [zone , setZone] = useState({});
     const  [device , setDevice] = useState({});
     const [topics , setTopics] = useState({});
@@ -79,7 +82,6 @@ export default function Machine({navigation}) {
     { headers: { Authorization: `Bearer ${token}` } },
       ).then(response => {
         console.log("coups");
-        // console.log( JSON.stringify(response.data.data.coups[0]));
         setCoups(response.data.data.coups);
         const date = new Date(response.data.data.coups[0].createdAt);
 
@@ -98,7 +100,7 @@ export default function Machine({navigation}) {
         const now = new Date();
         const currentHour = now.getUTCHours();
         const currentMinute = now.getUTCMinutes();
-        
+        //       hours with coups
   const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
   const date = new Date(item.createdAt);
   const hour = date.getUTCHours();
@@ -139,15 +141,50 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
     }
   }
 }
+ 
+            //////////detect stoppages//////
+            // initialize an array to store stoppage periods
+const stoppagePeriods = [];
+
+// loop through the HoursWithCoups array
+for (let h = 0; h < HoursWithCoups.length; h++) {
+  for (let m = 0; m < HoursWithCoups[h].minutes.length; m++) {
+    // check if the minute has a red color
+    if (HoursWithCoups[h].minutes[m].coups[0].col === 'red') {
+      // if it does, initialize a new stoppage period object
+      const newPeriod = {
+        start: { hour: h, minute: m },
+        end: { hour: h, minute: m }
+      };
+      // loop through the remaining minutes and group consecutive stoppages together
+      for (let m2 = m + 1; m2 < HoursWithCoups[h].minutes.length; m2++) {
+        if (HoursWithCoups[h].minutes[m2].coups[0].col === 'red') {
+          newPeriod.end = { hour: h, minute: m2 };
+          m = m2; // skip the remaining minutes in this stoppage period
+        } else {
+          break; // stop grouping consecutive stoppages together
+        }
+      }
+      // add the stoppage period object to the array
+      stoppagePeriods.push(newPeriod);
+    }
+  }
+}
+
+
+
+
 
   setTimeLineData(HoursWithCoups);
+  setStoppages(stoppagePeriods);
+  console.log(HoursWithCoups[13].minutes[6]);
+  console.log(stoppages[1]);
 
-  console.log(HoursWithCoups[7].minutes[1]);
   // console.log(formattedDate);
   // console.log(formattedNextDay);
-  console.log(currentHour);
-  console.log(currentMinute);
-  console.log(TimeLineData[currentHour].minutes[6]);
+  //console.log(currentHour);
+  //console.log(currentMinute);
+  //console.log(TimeLineData[currentHour].minutes[6]);
 
   
 
@@ -173,12 +210,11 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
                 fontSize: 50,
                 fontWeight: 'bold',
               }} >
-                TimeLine Chart
+                TimeLine rChart
               </Text>
+            {/* <StoppageComp stoppagePeriods={stoppages}  /> */}
             <MachineTimetableRow 
-            // hours={hours} machineStates= {machineStates} 
             TimeLineData={TimeLineData}
-              // style={styles.machineStateContainer}
               />
 
             </View>

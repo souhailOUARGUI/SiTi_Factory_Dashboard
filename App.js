@@ -8,6 +8,7 @@ import TestPaper from './screens/charts/testPaper';
 import NewLogin from './screens/newLogin';
 import MachineStats from './screens/machineStats';
 import Machine from './screens/machine';
+import NavTest from './screens/navTest';
 export  default function App() {
   return (
     <View style={styles.container}>
@@ -18,6 +19,7 @@ export  default function App() {
       {/* <MachineStats/> */}
       {/* <NewLogin/> */}
       {/* <Machine/> */}
+      {/* <NavTest/> */}
 
       
     </View>

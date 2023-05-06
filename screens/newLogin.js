@@ -117,9 +117,8 @@ const data = {
         color:'white',
         // marginBottom:'10%'
     }} >
-        SITI
+        SITI-SCADA
     </Text>
-
     <Text style={{
         fontSize:18,
         fontWeight:'600',
@@ -131,7 +130,6 @@ const data = {
 
   <View style={{
     marginTop:'10%'  }} >
-  
   </View>
   <Input
   style={

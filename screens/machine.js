@@ -1,6 +1,6 @@
 
 
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, Dimensions, Image, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, Dimensions, Image, TouchableOpacity, ScrollView, Pressable,ActivityIndicator } from 'react-native';
 
 import React, { useState, useEffect } from 'react';
 import Timeline from 'react-native-timeline-flatlist';
@@ -22,6 +22,7 @@ import { Use } from 'react-native-svg';
 import axios from 'axios';
 import MachineTimetableRow from './machineRow';
 import StoppageComp from './stoppages/stoppageComp';
+import io from 'socket.io-client';
 
 const baseUrl = 'http://gounane.ovh:8000/api/v1';
 
@@ -44,6 +45,7 @@ export default function Machine({navigation}) {
     const [TimeLineData , setTimeLineData] = useState([]);
     const [timeLineDateStart,setTimeLineDateStart] = useState('2023-05-03');
     const [timeLineDateEnd,setTimeLineDateEnd] = useState('2023-05-04');
+    const [socketData, setSocketData] = useState([]);
 
 
     //      get current day  date :
@@ -170,15 +172,50 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
     }
   }
 }
+setTimeLineData(HoursWithCoups);
+setStoppages(stoppagePeriods);
+
+          // implementing socket data method
+          const socket = io('http://gounane.ovh:8000',
+          {
+      
+            transports: ['websocket'],  
+            query: {
+              access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MzMyMDA1MSwiZXhwIjoxNjg1OTEyMDUxfQ.cQB3zYsmRUxm4ESGABBEB9j3kNokl7zPIQKOejN5Yxc', // Replace with your access token
+            },
+            auth: {
+              token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MzMyMDA1MSwiZXhwIjoxNjg1OTEyMDUxfQ.cQB3zYsmRUxm4ESGABBEB9j3kNokl7zPIQKOejN5Yxc', // Replace with your access token
+            },
+             });
+             socket.on('connect', () => {
+              console.log('connected to socket');
+            });
+          
+            socket.on('mqtt-NASA25', (data) => {
+              const date = new Date(data.createdAt);
+              const hour = date.getUTCHours();
+              const minute = date.getUTCMinutes();
+              const coups = { col: data.coups_min === 0 ? "red" : data.coups_min <= 30 ? 'yellow' : 'green', coup: data.coups_min };
+              console.log(data);
+              HoursWithCoups[hour].minutes[minute].coups = [coups];
+            
+              // Update the component state to trigger re-rendering
+              setTimeLineData([...HoursWithCoups]);
+            });
+          
+            return () => {
+              socket.disconnect();
+            };
 
 
 
 
-
-  setTimeLineData(HoursWithCoups);
-  setStoppages(stoppagePeriods);
-  console.log(HoursWithCoups[13].minutes[6]);
-  console.log(stoppages[1]);
+  // setTimeLineData(HoursWithCoups);
+  
+  // console.log(HoursWithCoups[currentHour].minutes[currentMinute].coups[0].col);
+  // console.log('stoppages detected');
+  //console.log(stoppages);
+  
 
   // console.log(formattedDate);
   // console.log(formattedNextDay);
@@ -204,19 +241,24 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
             style={styles.title}
             >{machine.name}</Text>
             <View style={styles.timeLine}  >
-              <Text style={{
+              
+              
+            
+            {/* <StoppageComp stoppagePeriods={stoppages}  /> */}
+            <View style={styles.timeLineContainer} >
+            <Text style={{
                 textAlign: 'center',
-                margin: 20,
-                fontSize: 50,
+                margin: 2,
+                fontSize: 30,
                 fontWeight: 'bold',
               }} >
-                TimeLine rChart
+                TimeLine Chart
               </Text>
-            {/* <StoppageComp stoppagePeriods={stoppages}  /> */}
+            
             <MachineTimetableRow 
             TimeLineData={TimeLineData}
               />
-
+            </View>
             </View>
             
             
@@ -229,7 +271,7 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
 const styles = StyleSheet.create({          
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
     },
     title:{
         fontSize: 18,
@@ -237,7 +279,7 @@ const styles = StyleSheet.create({
         margin: 50,
         fontWeight: 'bold',
         fontSize: 30,
-
+      
     }
   ,machineStateContainer: {
     flexDirection: 'row',
@@ -266,4 +308,24 @@ const styles = StyleSheet.create({
     marginTop: 20,
 
   },
+  timeLineContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#F6F6C9',
+    margin: 0,
+    borderRadius: 30,
+    padding: 2,
+    //shadow 
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.53,
+    shadowRadius: 13.97,
+    elevation: 21,
+
+  },
+
+
 });

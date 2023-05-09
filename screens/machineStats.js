@@ -83,8 +83,11 @@ const MachineStats = ({ navigation }) => {
       >
         <Text style={{
           margin: 20,
+          marginTop: 40,
           fontSize: 40,
           textAlign: 'center',
+          fontWeight: 'bold',
+          fontFamily: 'sans-serif-condensed',
           
           marginBottom: 30,
           
@@ -93,7 +96,15 @@ const MachineStats = ({ navigation }) => {
         </Text>
         <ScrollView
           style={{
-            // flex:1
+            flex:1,
+            //border radius for the top 
+             borderTopLeftRadius: 30,
+             borderTopRightRadius: 30,
+             //overflow: 'hidden',
+            // backgroundColor: 'white',
+            // height: '100%',
+            // width: '100%',
+
             
           }}
 
@@ -102,6 +113,10 @@ const MachineStats = ({ navigation }) => {
           style={{
             justifyContent:'center',
             alignItems:'center',
+             
+
+
+            
           }}
            >
 

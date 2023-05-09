@@ -1,11 +1,18 @@
-import React from 'react';
-import { View,Text,StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View,Text,StyleSheet,ActivityIndicator } from 'react-native';
 import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 const MachineTimetableRow = ({ 
   // hours, machineStates,
   TimeLineData }) => {
   // const minutes = Array.from({ length: 60 }, (_, i) => i);
+  
+
+
+  //      get and set socket data from server        
+  
+
+
 
   return (
     <View
@@ -14,7 +21,8 @@ const MachineTimetableRow = ({
     }}
     >
     {
-      TimeLineData &&
+      TimeLineData.length === 0 ? <ActivityIndicator size="large" color="#0000ff" style={styles.indicator} /> :
+      
       TimeLineData.map((hour) => (
         <View style={{margin: 0,
           flexDirection: 'row', alignItems: 'center' }}
@@ -49,6 +57,7 @@ const MachineTimetableRow = ({
          </View>
        </View>
       ))
+      
     }
     </View>
   );
@@ -63,4 +72,12 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 2,
   },
+  indicator: {
+    //center this on the screen
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: height / 1.5,
+  }
+
 })

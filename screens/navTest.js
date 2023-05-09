@@ -20,9 +20,45 @@ import { ApplicationProvider, Divider, Drawer, DrawerItem, IndexPath, ViewPager,
 import { log, min } from 'react-native-reanimated';
 import { Use } from 'react-native-svg';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const NavTest = ({ navigation }) => {
-    
+    const [socketData, setSocketData] = useState([]);
+
+    useEffect(() => {
+         const socket = io('http://gounane.ovh:8000',
+         {
+            transports: ['websocket'],
+            query: {
+              access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MzMyMDA1MSwiZXhwIjoxNjg1OTEyMDUxfQ.cQB3zYsmRUxm4ESGABBEB9j3kNokl7zPIQKOejN5Yxc' // Replace with your access token
+            },
+            auth: {
+              token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MzMyMDA1MSwiZXhwIjoxNjg1OTEyMDUxfQ.cQB3zYsmRUxm4ESGABBEB9j3kNokl7zPIQKOejN5Yxc' // Replace with your access token
+            }
+          }
+         );
+        socket.on('connect', () => {
+            console.log('connected');
+        });
+        // socket.on('connection', (data) => {
+        //     // setSocketData(data);
+        //     // console.log(data);
+        // });
+        socket.on('mqtt-NASA25', (data) => {
+            setSocketData(data);
+            console.log(data);
+        });
+        
+        return () => {
+            socket.disconnect();
+            //remove listener for 'mqtt-NASA28'
+            // socket.off('mqtt-NASA28');
+          };
+        // });
+    }, []);
+
+
+
     return (
         
         <View>

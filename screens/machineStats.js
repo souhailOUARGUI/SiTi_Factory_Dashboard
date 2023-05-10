@@ -55,7 +55,7 @@ const MachineStats = ({ navigation }) => {
       { headers: { Authorization: `Bearer ${token}` } }
     )
       .then(response => {
-        console.log(JSON.stringify(response.data.data.machines));
+        // console.log(JSON.stringify(response.data.data.machines));
         setMachines(response.data.data.machines);
 
       })
@@ -69,12 +69,14 @@ const MachineStats = ({ navigation }) => {
   return (
 
     // <ImageBackground
-    //   //  source={require('../assets/images/tea_backgr.jpg')}
+    //     source={require('../assets/images/tea_back4.jpg')}
     //   resizeMode='cover'
-    //   blurRadius={0}
+    //   blurRadius={10}
+
+    //   borderRadius={30}
     //   style={{
     //     flex: 1,
-
+    //     marginTop: 15,
     //   }}
     // >
 
@@ -131,7 +133,7 @@ const MachineStats = ({ navigation }) => {
                   marginBottom: 5,
                   margin: 15,
                   padding: 5,
-                  borderRadius: 15,
+                  borderRadius: 30,
                   borderColor: 'white',
                   borderWidth: 1,
                   shadowColor: "#000",
@@ -169,7 +171,7 @@ elevation: 0,
                     </Text>
                     
                     
-                    <Text
+                    {/* <Text
                     style = {{
                       fontSize: 18,
                       textAlign: 'center',
@@ -177,7 +179,7 @@ elevation: 0,
                     }}
                     >
                     General statistics :
-                    </Text>
+                    </Text> */}
                   </View>
 
                   <ProgressChart
@@ -225,7 +227,7 @@ elevation: 0,
                         fontWeight: '400',
                       }} >{machine.model}</Text>
                     </Text>
-                    <Text style={{
+                    {/* <Text style={{
                        paddingBottom: 10,
                       fontSize: 18,
                       textAlign: 'left',
@@ -235,7 +237,7 @@ elevation: 0,
                         fontSize: 18,
                         fontWeight: '400',
                       }} >{machine.device}</Text>
-                    </Text>
+                    </Text> */}
                   </View>
 
                 </View>
@@ -249,7 +251,7 @@ elevation: 0,
         </ScrollView>
 
       </View>
-    // </ImageBackground>
+    //  </ImageBackground>
 
 
   )

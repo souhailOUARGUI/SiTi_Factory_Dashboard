@@ -20,7 +20,9 @@ const screens = {
         }
     },Machine:{
         screen: Machine,
-        navigationOptions:{}
+        navigationOptions:{
+            headerShown: false,
+        }
     },
     /* ,WelcomePage:{
         screen: WelcomePage
@@ -34,6 +36,15 @@ const StackNavi = createStackNavigator(screens,{
         headerTitleStyle:{
             fontSize: 30,
             fontWeight: 'bold',
+            color: '#fff',
+            // black shadow for the header title
+            // textShadowColor: 'rgba(0, 0, 0, 0.60)',textShadowOffset: {width: -1, height: 1},
+            // textShadowRadius: 5,
+
+
+
+
+
         },
         headerStyle: {
             backgroundColor: '#98DFAF',

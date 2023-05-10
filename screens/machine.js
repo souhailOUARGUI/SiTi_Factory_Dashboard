@@ -37,6 +37,7 @@ export default function Machine({navigation}) {
 
     /////////////////////////////////////////////
     const [machine, setMachine] = useState({});
+    const [product, setProduct] = useState({});
     const [stoppages, setStoppages] = useState([]);
     const [zone , setZone] = useState({});
     const  [device , setDevice] = useState({});
@@ -76,6 +77,8 @@ export default function Machine({navigation}) {
         setMachine(response.data.data.machine);
         setZone(response.data.data.machine.zone);
         setDevice(response.data.data.machine.device);
+        setProduct(response.data.data.machine.current_product);
+        
         setTopics(response.data.data.machine.topics);
     });
     //              get coups of machine
@@ -121,7 +124,7 @@ export default function Machine({navigation}) {
     HoursWithCoups.forEach((hour) => {
       hour.minutes.forEach((minute) => {
         if (minute.coups.length === 0) {
-          minute.coups.push({ min: "no data",col:"#D8D8D8" });
+          minute.coups.push({ min: "no data",col:"#B9B9B7" });
         }else{
            minute.coups = [minute.coups[0]];
           
@@ -146,34 +149,34 @@ for (let h = 0; h < HoursWithCoups.length; h++) {
  
             //////////detect stoppages//////
             // initialize an array to store stoppage periods
-const stoppagePeriods = [];
+// const stoppagePeriods = [];
 
-// loop through the HoursWithCoups array
-for (let h = 0; h < HoursWithCoups.length; h++) {
-  for (let m = 0; m < HoursWithCoups[h].minutes.length; m++) {
-    // check if the minute has a red color
-    if (HoursWithCoups[h].minutes[m].coups[0].col === 'red') {
-      // if it does, initialize a new stoppage period object
-      const newPeriod = {
-        start: { hour: h, minute: m },
-        end: { hour: h, minute: m }
-      };
-      // loop through the remaining minutes and group consecutive stoppages together
-      for (let m2 = m + 1; m2 < HoursWithCoups[h].minutes.length; m2++) {
-        if (HoursWithCoups[h].minutes[m2].coups[0].col === 'red') {
-          newPeriod.end = { hour: h, minute: m2 };
-          m = m2; // skip the remaining minutes in this stoppage period
-        } else {
-          break; // stop grouping consecutive stoppages together
-        }
-      }
-      // add the stoppage period object to the array
-      stoppagePeriods.push(newPeriod);
-    }
-  }
-}
+// // loop through the HoursWithCoups array
+// for (let h = 0; h < HoursWithCoups.length; h++) {
+//   for (let m = 0; m < HoursWithCoups[h].minutes.length; m++) {
+//     // check if the minute has a red color
+//     if (HoursWithCoups[h].minutes[m].coups[0].col === 'red') {
+//       // if it does, initialize a new stoppage period object
+//       const newPeriod = {
+//         start: { hour: h, minute: m },
+//         end: { hour: h, minute: m }
+//       };
+//       // loop through the remaining minutes and group consecutive stoppages together
+//       for (let m2 = m + 1; m2 < HoursWithCoups[h].minutes.length; m2++) {
+//         if (HoursWithCoups[h].minutes[m2].coups[0].col === 'red') {
+//           newPeriod.end = { hour: h, minute: m2 };
+//           m = m2; // skip the remaining minutes in this stoppage period
+//         } else {
+//           break; // stop grouping consecutive stoppages together
+//         }
+//       }
+//       // add the stoppage period object to the array
+//       stoppagePeriods.push(newPeriod);
+//     }
+//   }
+// }
 setTimeLineData(HoursWithCoups);
-setStoppages(stoppagePeriods);
+// setStoppages(stoppagePeriods);
 
           // implementing socket data method
           const socket = io('http://gounane.ovh:8000',
@@ -196,7 +199,7 @@ setStoppages(stoppagePeriods);
               const hour = date.getUTCHours();
               const minute = date.getUTCMinutes();
               const coups = { col: data.coups_min === 0 ? "red" : data.coups_min <= 30 ? 'yellow' : 'green', coup: data.coups_min };
-              console.log(data);
+              //console.log(data);
               HoursWithCoups[hour].minutes[minute].coups = [coups];
             
               // Update the component state to trigger re-rendering
@@ -206,8 +209,6 @@ setStoppages(stoppagePeriods);
             return () => {
               socket.disconnect();
             };
-
-
 
 
   // setTimeLineData(HoursWithCoups);
@@ -235,11 +236,35 @@ setStoppages(stoppagePeriods);
         <ScrollView 
         style ={styles.container}
         >
-
-        <View >
-            <Text
+      
+      <ImageBackground
+      source={require('../assets/images/josh-calabrese-XXpbdU_31Sg-unsplash.jpg')}
+      blurRadius={0}
+      borderRadius={30}
+      style={{  
+        flex: 1,
+        marginTop: 25,
+        resizeMode: "cover",
+        justifyContent: "center",
+        }}
+        resizeMode='cover'
+         
+        imageStyle={{borderRadius: 30,marginTop: -150}}
+      >
+          <Text
             style={styles.title}
-            >{machine.name}</Text>
+            >{machine.name}
+            </Text>
+          <Text style={styles.prodName} >
+            {product?.name}
+          </Text>
+      </ImageBackground>
+        
+        
+        
+        <View >
+           
+
             <View style={styles.timeLine}  >
               
               
@@ -263,7 +288,10 @@ setStoppages(stoppagePeriods);
             
             
         </View>
+
         </ScrollView>
+
+              
     )   
 }
 
@@ -274,11 +302,17 @@ const styles = StyleSheet.create({
         // backgroundColor: '#fff',
     },
     title:{
-        fontSize: 18,
+
         textAlign: 'center',
         margin: 50,
         fontWeight: 'bold',
-        fontSize: 30,
+        fontSize: 40,
+        //green text shadow style 
+        textShadowColor: 'gray',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10,
+        
+
       
     }
   ,machineStateContainer: {
@@ -311,8 +345,8 @@ const styles = StyleSheet.create({
   timeLineContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#F6F6C9',
-    margin: 0,
+    backgroundColor: '#fff',
+    marginTop: 50,
     borderRadius: 30,
     padding: 2,
     //shadow 
@@ -326,6 +360,35 @@ const styles = StyleSheet.create({
     elevation: 21,
 
   },
+  machineheaderContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 40,
+    backgroundColor: '#F6F6C9',
+    
+    
+
+      
+
+  },
+  prodName: {
+    //position in the buttom on the left of the parent component
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    fontSize: 20,
+    fontWeight: '600',
+    color: 'black',
+    margin: 10,
+    // textShadowColor: 'gray',
+    
+  },
+
+
 
 
 });

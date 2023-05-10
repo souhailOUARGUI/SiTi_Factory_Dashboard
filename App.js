@@ -9,6 +9,7 @@ import NewLogin from './screens/newLogin';
 import MachineStats from './screens/machineStats';
 import Machine from './screens/machine';
 import NavTest from './screens/navTest';
+import HomeComp from './screens/Home';
 export  default function App() {
   return (
     <View style={styles.container}>
@@ -20,6 +21,7 @@ export  default function App() {
       {/* <NewLogin/> */}
       {/* <Machine/> */}
       {/* <NavTest/> */}
+      {/* <HomeComp/> */}
 
       
     </View>

@@ -1,97 +1,80 @@
-import { createStackNavigator } from "react-navigation-stack"; 
+import { createStackNavigator } from 'react-navigation-stack'
 
-import { createAppContainer,createSwitchNavigator } from 'react-navigation';
-import WelcomePage from "../screens/welcomePage";
-import LoginPage from "../screens/login";
-import MachineStats from "../screens/machineStats";
-import NewLogin from "../screens/newLogin";
-import Machine from "../screens/machine";
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
+import WelcomePage from '../screens/welcomePage'
+import LoginPage from '../screens/login'
+import MachineStats from '../screens/machineStats'
+import NewLogin from '../screens/newLogin'
+import Machine from '../screens/machine'
 const screens = {
-    //  NewLogin: {
-    //     screen: NewLogin,
-    //     navigationOptions: {
-    //      headerShown:false,}
-    // },
-    MachineStats:{
-        screen: MachineStats,
-        navigationOptions:{
-            title: 'Dashboards',
-            
-        }
-    },Machine:{
-        screen: Machine,
-        navigationOptions:{
-            headerShown: false,
-        }
+  //  NewLogin: {
+  //     screen: NewLogin,
+  //     navigationOptions: {
+  //      headerShown:false,}
+  // },
+  MachineStats: {
+    screen: MachineStats,
+    navigationOptions: {
+      title: 'Dashboards',
     },
-    /* ,WelcomePage:{
+  },
+  Machine: {
+    screen: Machine,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  /* ,WelcomePage:{
         screen: WelcomePage
     } */
 }
 
-const StackNavi = createStackNavigator(screens,{
-    defaultNavigationOptions: {
-        /* title: '', */
-        headerTitleAlign : 'center',
-        headerTitleStyle:{
-            fontSize: 30,
-            fontWeight: 'bold',
-            color: '#fff',
-            // black shadow for the header title
-            // textShadowColor: 'rgba(0, 0, 0, 0.60)',textShadowOffset: {width: -1, height: 1},
-            // textShadowRadius: 5,
+const StackNavi = createStackNavigator(screens, {
+  defaultNavigationOptions: {
+    /* title: '', */
+    headerTitleAlign: 'center',
+    headerTitleStyle: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      color: '#fff',
+      // black shadow for the header title
+      // textShadowColor: 'rgba(0, 0, 0, 0.60)',textShadowOffset: {width: -1, height: 1},
+      // textShadowRadius: 5,
+    },
+    headerStyle: {
+      backgroundColor: '#98DFAF',
+      borderBottomStartRadius: 40,
+      borderBottomEndRadius: 40,
+      //a good looking shadow for the header
+      shadowColor: 'black',
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.29,
+      shadowRadius: 5,
+      elevation: 10,
+    },
 
-
-
-
-
-        },
-        headerStyle: {
-            backgroundColor: '#98DFAF',
-            borderBottomStartRadius: 40,
-            borderBottomEndRadius: 40,
-            //a good looking shadow for the header
-            shadowColor: 'black',
-            shadowOffset: {
-                width: 0,
-                height: 3,
-            }   ,
-            shadowOpacity: 0.29,
-            shadowRadius: 5,
-            elevation: 10,
-            
-
-
-            
-        },
-        
-
-        
-        
-        
-        /* cardStyle: {
+    /* cardStyle: {
             backgroundColor: 'blue'
         } */
-        
-    }
-});
+  },
+})
 
 const LoginSwitchNav = createSwitchNavigator(
-    {
-      NewLogin: {
-        screen: NewLogin,
-        navigationOptions: {
-          headerShown: false,
-        },
+  {
+    NewLogin: {
+      screen: NewLogin,
+      navigationOptions: {
+        headerShown: false,
       },
-      Main: StackNavi,
     },
-    {
-      initialRouteName: 'NewLogin', // Set the initial route to the login screen
-    },
+    Main: StackNavi,
+  },
+  {
+    initialRouteName: 'NewLogin', // Set the initial route to the login screen
+  },
+)
 
-  );
-
-
-
-export default createAppContainer(LoginSwitchNav);
+export default createAppContainer(LoginSwitchNav)

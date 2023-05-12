@@ -19,6 +19,7 @@ import { ApplicationProvider, Divider, Drawer, DrawerItem, IndexPath, ViewPager,
 import { log } from 'react-native-reanimated';
 import { Use } from 'react-native-svg';
 import axios from 'axios';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const baseUrl = 'http://gounane.ovh:8000/api/v1';
 

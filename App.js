@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,ImageBackground,SafeAreaView,Dimensions } from 'react-native';
-import WelcomePage from './screens/welcomePage';
-import Navigator from './routes/loginStackNav';
-import LoginPage from './screens/login';
-import ChartTest from './screens/charts/charttest';
-import TestPaper from './screens/charts/testPaper';
-import NewLogin from './screens/newLogin';
-import MachineStats from './screens/machineStats';
-import Machine from './screens/machine';
-import NavTest from './screens/navTest';
-import HomeComp from './screens/Home';
-export  default function App() {
+import { StatusBar } from 'expo-status-bar'
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  SafeAreaView,
+  Dimensions,
+} from 'react-native'
+import WelcomePage from './screens/welcomePage'
+import Navigator from './routes/loginStackNav'
+import LoginPage from './screens/login'
+import ChartTest from './screens/charts/charttest'
+import TestPaper from './screens/charts/testPaper'
+import NewLogin from './screens/newLogin'
+import MachineStats from './screens/machineStats'
+import Machine from './screens/machine'
+import NavTest from './screens/navTest'
+import HomeComp from './screens/Home'
+export default function App() {
   return (
     <View style={styles.container}>
       {/* <WelcomePage/> */}
-      <Navigator/>
+      <Navigator />
       {/* <ChartTest/> */}
       {/* <LoginPage/> */}
       {/* <MachineStats/> */}
@@ -22,22 +29,13 @@ export  default function App() {
       {/* <Machine/> */}
       {/* <NavTest/> */}
       {/* <HomeComp/> */}
-
-      
     </View>
-  );
+  )
 }
-
- 
-
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-});
+})

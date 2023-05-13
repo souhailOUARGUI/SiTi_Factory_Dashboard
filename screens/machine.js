@@ -3,46 +3,22 @@ import {
   Text,
   View,
   ImageBackground,
-  SafeAreaView,
   Dimensions,
-  Image,
   Modal,
-  TouchableOpacity,
   ScrollView,
   Pressable,
-  ActivityIndicator,
   TextInput,
   Button,
   Animated,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native'
 
 import React, { useState, useEffect } from 'react'
 import Timeline from 'react-native-timeline-flatlist'
 const { height, width } = Dimensions.get('window')
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/AntDesign'
 
-
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit'
-
-import * as eva from '@eva-design/eva'
-import {
-  ApplicationProvider,
-  Divider,
-  Drawer,
-  DrawerItem,
-  IndexPath,
-  ViewPager,
-  Layout,
-} from '@ui-kitten/components'
-import { log, min } from 'react-native-reanimated'
-import { Use } from 'react-native-svg'
 import axios from 'axios'
 import MachineTimetableRow from './machineRow'
 import StoppageComp from './stoppages/stoppageComp'
@@ -57,12 +33,13 @@ export default function Machine({ navigation }) {
 
   /////////////////////////////////////////////
   const [machine, setMachine] = useState({})
-  const [shifts, setShifts] = useState([])
+  // const [shifts, setShifts] = useState([])
   const [product, setProduct] = useState({})
+  // const [products, setProducts] = useState([])
   const [stoppages, setStoppages] = useState([])
-  const [zone, setZone] = useState({})
-  const [device, setDevice] = useState({})
-  const [topics, setTopics] = useState({})
+  // const [zone, setZone] = useState({})
+  // const [device, setDevice] = useState({})
+  // const [topics, setTopics] = useState({})
   const [coups, setCoups] = useState([])
   const [TimeLineData, setTimeLineData] = useState([])
   const [timeLineDateStart, setTimeLineDateStart] = useState('2023-05-03')
@@ -87,7 +64,23 @@ export default function Machine({ navigation }) {
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MjY4Mzk1NiwiZXhwIjoxNjg1Mjc1OTU2fQ.Ym0TWyG9Ql_Tm5ceRVJXPl2Dm1C1Y1Tq1d9cFARUREk'
 
-    //             get machine
+    //******************  get products ****************
+    // axios
+    //   .get(
+    //     `${baseUrl}/products`,
+    //     //send jwt token in header
+    //     { headers: { Authorization: `Bearer ${token}` } },
+    //   )
+    //   .then(response => {
+    //     console.log('products');
+    //     // console.log(JSON.stringify(response.data.data.products[2]));
+    //     setProducts(response.data.data.products)
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   })
+
+    //******************  get machine ****************
     axios
       .get(
         `${baseUrl}/machines/${MachineId}`,
@@ -97,13 +90,27 @@ export default function Machine({ navigation }) {
       .then(response => {
         // console.log(JSON.stringify(response.data.data.machine));
         setMachine(response.data.data.machine)
-        setZone(response.data.data.machine.zone)
-        setDevice(response.data.data.machine.device)
+        // setZone(response.data.data.machine.zone)
+        // setDevice(response.data.data.machine.device)
         setProduct(response.data.data.machine.current_product)
 
-        setTopics(response.data.data.machine.topics)
+        // setTopics(response.data.data.machine.topics)
       })
-    //              get coups of machine
+    //         ****************     get coups of machine    ****************
+    const Hours = Array.from({ length: 24 }, (_, i) => ({
+      hour: i,
+      minutes: Array.from({ length: 60 }, (_, j) => ({
+        minute: j,
+        coups: [],
+      })),
+    }))
+    //     current time
+    const now = new Date()
+    const currentHour = now.getUTCHours()
+    const currentMinute = now.getUTCMinutes()
+
+    //      -----------------  main Coup component table -----------------
+    const HoursWithCoups = Hours
     axios
       .get(
         `${baseUrl}/machines/${MachineId}/coups?sort=+createdAt&createdAt[gte]=${formattedDate}&createdAt[lt]=${formattedNextDay}`,
@@ -116,20 +123,9 @@ export default function Machine({ navigation }) {
         const date = new Date(response.data.data.coups[0].createdAt)
 
         // *********************   timeline data treatement *********************
-        const Hours = Array.from({ length: 24 }, (_, i) => ({
-          hour: i,
-          minutes: Array.from({ length: 60 }, (_, j) => ({
-            minute: j,
-            coups: [],
-          })),
-        }))
 
-        //     current time
-        const now = new Date()
-        const currentHour = now.getUTCHours()
-        const currentMinute = now.getUTCMinutes()
         //       hours with coups
-        const HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
+        HoursWithCoups = response.data.data.coups.reduce((acc, item) => {
           const date = new Date(item.createdAt)
           const hour = date.getUTCHours()
           const minute = date.getMinutes()
@@ -147,7 +143,7 @@ export default function Machine({ navigation }) {
             coup: item.coups_min,
           })
           return acc
-        }, Hours)
+        }, Hours);
         //           coloring minutes with no data
         HoursWithCoups.forEach(hour => {
           hour.minutes.forEach(minute => {
@@ -244,7 +240,18 @@ export default function Machine({ navigation }) {
         ////////////////////////////////////
       })
       .catch(error => {
-        console.log(error)
+        console.log('no data today ===>', error)
+        //           coloring minutes with no data
+        HoursWithCoups.forEach(hour => {
+          hour.minutes.forEach(minute => {
+            if (minute.coups.length === 0) {
+              minute.coups.push({ min: 'no data', col: '#B9B9B7' })
+            } else {
+              minute.coups = [minute.coups[0]]
+            }
+          })
+        })
+        setTimeLineData(HoursWithCoups)
       })
 
     //    ************get shift of machine with {{URI}}/shifts?machines=644735bcc10b778be78297a1&days=Mo ******************
@@ -270,6 +277,17 @@ export default function Machine({ navigation }) {
       .catch(error => {
         console.log(error)
       })
+
+    //******************change product name with patch request**********************
+    // axios.patch(`${baseUrl}/machines/${MachineId}`, {
+    //   name: 'new product name',
+    // })
+    // .then(response => {
+    //   console.log(response.data.data.machine.current_product);
+    // } ).catch(error => {
+    //   console.log(error)
+    // }
+    // );
   }, [])
 
   //       product changing handler for modal
@@ -280,7 +298,7 @@ export default function Machine({ navigation }) {
     <ScrollView style={styles.container}>
       <ImageBackground
         source={require('../assets/images/josh-calabrese-XXpbdU_31Sg-unsplash.jpg')}
-        blurRadius={0}
+        blurRadius={5}
         borderRadius={30}
         style={{
           flex: 1,
@@ -306,55 +324,77 @@ export default function Machine({ navigation }) {
         >
           <Icon name='arrowleft' size={30} color={'#755851'} />
         </Pressable>
-        
 
         <Text style={styles.title}>{machine.name}</Text>
         <Pressable onPress={handleModalPress}>
           <Text style={styles.prodName}>{product?.name}</Text>
         </Pressable>
       </ImageBackground>
-      {/* MOdal Part */}
-      <Modal visible={modalVisible} animationType='slide' transparent={true}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Change Product Name</Text>
-          <TextInput
-            style={styles.input}
-            value={product?.name}
-            onChangeText={text => {
-              // Handle input changes here
-            }}
-          />
 
-          <View
-            style={{
-              marginTop: 20,
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              flexDirection: 'row',
-              width: '100%',
-            }}
-          >
-            <View style={{ width: '30%' }}>
-              <Button
-                title='Save'
-                onPress={() => {
-                  // Handle save button press here
-                  setModalVisible(false)
-                }}
-                color={'green'}
-              />
-            </View>
-            <View style={{ width: '30%' }}>
-              <Button
-                title='Cancel'
-                onPress={() => setModalVisible(false)}
-                color='gray'
-                style={{ width: '50%' }}
-              />
+      {/* MOdal Part */}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setModalVisible(false)
+        }}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Modal visible={modalVisible} animationType='slide' transparent={true}>
+          <View style={styles.modalContainer}>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={{
+                position: 'absolute',
+                top: 0,
+                // right: 20,
+                margin: 10,
+                backgroundColor: '#F6F6C9',
+                borderRadius: 50,
+                padding: 10,
+              }}
+            >
+              <Icon name='close' size={30} color={'#755851'} />
+            </Pressable>
+
+            <Text style={styles.modalTitle}>Change Product Name</Text>
+            <TextInput
+              style={styles.input}
+              value={product?.name}
+              onChangeText={text => {
+                // Handle input changes here
+              }}
+            />
+
+            <View
+              style={{
+                marginTop: 20,
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                flexDirection: 'row',
+                width: '100%',
+              }}
+            >
+              <View style={{ width: '30%' }}>
+                <Button
+                  title='Save'
+                  onPress={() => {
+                    // Handle save button press here
+                    setModalVisible(false)
+                  }}
+                  color={'green'}
+                />
+              </View>
+              <View style={{ width: '30%' }}>
+                <Button
+                  title='Cancel'
+                  onPress={() => setModalVisible(false)}
+                  color='gray'
+                  style={{ width: '50%' }}
+                />
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </TouchableWithoutFeedback>
 
       <View>
         <View style={styles.timeLine}>
@@ -458,7 +498,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#755851',
     margin: 10,
-    
+
     // textShadowColor: 'gray',
   },
   modalContainer: {

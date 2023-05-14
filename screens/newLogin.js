@@ -8,6 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   TextInput,
+  ScrollView,
   Pressable,
   Keyboard,
 } from 'react-native'
@@ -33,21 +34,20 @@ const NewLogin = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
   const [passwordHidden, setPasswordHidden] = useState(true)
-  const [rememberMe, setrememberMe] = useState(false)
-  const [emailError, setEmailError] = useState('');
-  const [passError, setPassError] = useState('');
+  const [rememberMe, setRememberMe] = useState(false)
+  const [emailError, setEmailError] = useState('')
+  const [passError, setPassError] = useState('')
   //const [emailValid,setEmailValid] = useState(false);
   //const [passwordValid,setPasswordValid] = useState(false);
-  
 
   //      ***************** remember Me handler *****************
-  const rememberMeHandler = () => {
+  /* const rememberMeHandler = () => {
     console.log('remember me pressed')
-  }
+  } */
 
   //      ***************** forgot password handler *****************
   const forgotPasswordHandler = () => {
-    console.log('forgot password pressed');
+    console.log('forgot password pressed')
     // send axios post method to forgot password api
     axios
       .post(`${baseUrl}/users/forget-password`, { email: email })
@@ -55,10 +55,9 @@ const NewLogin = ({ navigation }) => {
         console.log(response.data)
         if (response.data.status === 'success') {
           //styled popup message to check email
-          alert('Check your email for password reset link');
-
+          alert('Check your email for password reset link')
         } else {
-          alert('Email not found');
+          alert('Email not found')
         }
       })
       .catch(error => {
@@ -81,9 +80,8 @@ const NewLogin = ({ navigation }) => {
     //   return;
     // }
 
+    console.log('login pressed');
 
-    console.log('login pressed')
-    // rememberMe?rememberMeHandler():null;
     axios
       .post(`${baseUrl}/users/login`, data)
       .then(response => {
@@ -93,18 +91,18 @@ const NewLogin = ({ navigation }) => {
           try {
             AsyncStorage.setItem('token', token)
             console.log('token saved in async storage')
+            // saveCredentials(email,pass);
             navigation.navigate('MachineStats')
           } catch (error) {
             console.log('error saving token in async storage', error)
           }
         }
-        //replace the current route with MachineStats
-        //navigation.dispatch(StackActions.replace('MachineStats'));
       })
       .catch(error => {
         console.error(error)
       })
   }
+
   useEffect(() => {
     // checkAuth
     const checkAuthentication = async () => {
@@ -120,7 +118,8 @@ const NewLogin = ({ navigation }) => {
         console.log('error getting token from async storage', error)
       }
     }
-    checkAuthentication()
+    checkAuthentication();
+    // getCredentials();
   }, [])
 
   // email validation method for email textInput
@@ -138,9 +137,6 @@ const NewLogin = ({ navigation }) => {
   // useEffect(() => {
   //   validateEmail(email);
   // }, [email])
-  
-  
-  
 
   //validate password method for password textInput
   // const validatePassword = (pass) => {
@@ -155,19 +151,44 @@ const NewLogin = ({ navigation }) => {
   // }
 
   //           ****************** validations   ******************
-  
-  const isValidEmail = (email) => {
+
+  const isValidEmail = email => {
     // Regular expression to validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email)&&email.trim() !== '';
-  };
-  
-  const isValidPassword = (password) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email) && email.trim() !== ''
+  }
+
+  const isValidPassword = password => {
     // Password validation logic
     // Example: Password must be at least 6 characters long
-    return password.length >= 6;
-  };
-  
+    return password.length >= 6
+  }
+
+
+    //            *****************save credentials in async storage*****************
+    /* const saveCredentials = async (email,pass) => {
+      try {
+        if (rememberMe) {
+          await AsyncStorage.setItem('email', email);
+          await AsyncStorage.setItem('pass', pass);
+        }} catch (error) {
+        console.log('error saving credentials in async storage', error);
+        }
+      } */
+      //            *****************get credentials from async storage*****************
+      /* const getCredentials = async () => {
+        try {
+          const storedEmail = await AsyncStorage.getItem('email');
+          const storedPass = await AsyncStorage.getItem('pass');
+          if(storedEmail && storedPass){
+            setEmail(storedEmail);
+            setPass(storedPass);
+            setRememberMe(true);
+          }
+        } catch (error) {
+          console.log('error getting credentials from async storage', error);
+        }
+      } */
 
 
 
@@ -177,10 +198,8 @@ const NewLogin = ({ navigation }) => {
       blurRadius={10}
       style={{ flex: 1 }}
     >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss()
-        }}
+      <ScrollView
+      style={{flex:1}}
       >
         <View
           style={{
@@ -252,6 +271,7 @@ const NewLogin = ({ navigation }) => {
                   marginLeft: 10,
                   fontSize: 18,
                 }}
+                value={email}
                 placeholder='Email ID'
                 placeholderTextColor='#598F7F'
                 onChangeText={e => {
@@ -260,17 +280,16 @@ const NewLogin = ({ navigation }) => {
                 }}
               />
             </View>
-                                    {/* email validation error message  */}
+            {/* email validation error message  */}
             {/* {emailValid ? null : (
               <Text style={{color:'red',fontSize:12,marginLeft:20}}>Invalid Email</Text>
             )} */}
-            {emailError!==''?<Text style={{color:'red',fontSize:12,marginLeft:20}}>{emailError}</Text>:null}
+            {emailError !== '' ? (
+              <Text style={{ color: 'red', fontSize: 12, marginLeft: 20 }}>
+                {emailError}
+              </Text>
+            ) : null}
 
-            
-                
-
-            
-            
             <View
               style={{
                 width: width - 25,
@@ -292,6 +311,7 @@ const NewLogin = ({ navigation }) => {
 
                   fontSize: 18,
                 }}
+                value={pass}
                 placeholder='Password'
                 placeholderTextColor='#598F7F'
                 onChangeText={pass => {
@@ -321,11 +341,15 @@ const NewLogin = ({ navigation }) => {
                 />
               </Pressable>
             </View>
-                                          {/* password validation error message */}
+            {/* password validation error message */}
             {/* {passwordValid ? null : (
               <Text style={{color:'red',fontSize:12,marginLeft:20}}>Invalid Password</Text>
             )} */}
-            {passError!==''?<Text style={{color:'red',fontSize:12,marginLeft:20}}>{passError}</Text>:null}
+            {passError !== '' ? (
+              <Text style={{ color: 'red', fontSize: 12, marginLeft: 20 }}>
+                {passError}
+              </Text>
+            ) : null}
 
             {/* remember me  */}
             <View
@@ -342,7 +366,7 @@ const NewLogin = ({ navigation }) => {
               <Checkbox
                 status={rememberMe ? 'checked' : 'unchecked'}
                 onPress={() => {
-                  setrememberMe(!rememberMe)
+                  setRememberMe(!rememberMe);
                 }}
                 color='#F6F6C9'
                 uncheckedColor='#F6F6C9'
@@ -359,7 +383,7 @@ const NewLogin = ({ navigation }) => {
               {/*  forgot password inside a pressable*/}
               <Pressable
                 onPress={() => {
-                  forgotPasswordHandler();
+                  forgotPasswordHandler()
                 }}
                 style={{
                   position: 'absolute',
@@ -475,7 +499,7 @@ const NewLogin = ({ navigation }) => {
             </Pressable>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </ImageBackground>
   )
 }

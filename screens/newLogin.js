@@ -102,6 +102,7 @@ const NewLogin = ({ navigation }) => {
         console.error(error)
       })
   }
+  
 
   useEffect(() => {
     // checkAuth
@@ -166,7 +167,7 @@ const NewLogin = ({ navigation }) => {
 
 
     //            *****************save credentials in async storage*****************
-    /* const saveCredentials = async (email,pass) => {
+    const saveCredentials = async (email,pass) => {
       try {
         if (rememberMe) {
           await AsyncStorage.setItem('email', email);
@@ -174,7 +175,7 @@ const NewLogin = ({ navigation }) => {
         }} catch (error) {
         console.log('error saving credentials in async storage', error);
         }
-      } */
+      }
       //            *****************get credentials from async storage*****************
       /* const getCredentials = async () => {
         try {

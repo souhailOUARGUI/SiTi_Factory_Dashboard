@@ -110,10 +110,11 @@ export default function Machine({ navigation }) {
     const currentMinute = now.getUTCMinutes()
 
     //      -----------------  main Coup component table -----------------
-    const HoursWithCoups = Hours
+    const HoursWithCoups = Hours;
+    
     axios
       .get(
-        `${baseUrl}/machines/${MachineId}/coups?sort=+createdAt&createdAt[gte]=${formattedDate}&createdAt[lt]=${formattedNextDay}`,
+        `${baseUrl}/machines/${MachineId}/coups?start=${formattedDate}&end=${formattedNextDay}`,
         //send jwt token in header
         { headers: { Authorization: `Bearer ${token}` } },
       )
@@ -235,13 +236,13 @@ export default function Machine({ navigation }) {
         })
 
         return () => {
-          socket.disconnect()
+          socket.disconnect();
         }
         ////////////////////////////////////
       })
       .catch(error => {
         console.log('no data today ===>', error)
-        //           coloring minutes with no data
+                  // coloring minutes with no data
         HoursWithCoups.forEach(hour => {
           hour.minutes.forEach(minute => {
             if (minute.coups.length === 0) {
@@ -251,7 +252,7 @@ export default function Machine({ navigation }) {
             }
           })
         })
-        setTimeLineData(HoursWithCoups)
+        setTimeLineData(HoursWithCoups);
       })
 
     //    ************get shift of machine with {{URI}}/shifts?machines=644735bcc10b778be78297a1&days=Mo ******************
@@ -292,7 +293,7 @@ export default function Machine({ navigation }) {
 
   //       product changing handler for modal
   const handleModalPress = () => {
-    setModalVisible(true)
+    setModalVisible(true);
   }
   return (
     <ScrollView style={styles.container}>
@@ -411,7 +412,7 @@ export default function Machine({ navigation }) {
               TimeLine Chart
             </Text>
 
-            <ShiftsComp />
+            {/* <ShiftsComp /> */}
 
             <MachineTimetableRow TimeLineData={TimeLineData} />
           </View>

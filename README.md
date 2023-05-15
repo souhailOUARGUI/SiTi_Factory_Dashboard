@@ -73,9 +73,9 @@
 
 7. Shift Filter:
 
-- • The app should include a filter option to allow the operator to filter the
-  timeline data based on specific criteria within their shift.
-- • For example, the operator may want to view only downtime events, production
-  rates, or fault justifications within their shift.
-- • The shift filter should provide flexibility for the operator to customize
-  their view and focus on relevant data.
+- [ ] The app should include a filter option to allow the operator to filter the
+      timeline data based on specific criteria within their shift.
+- [ ] For example, the operator may want to view only downtime events,
+      production rates, or fault justifications within their shift.
+- [ ] The shift filter should provide flexibility for the operator to customize
+      their view and focus on relevant data.

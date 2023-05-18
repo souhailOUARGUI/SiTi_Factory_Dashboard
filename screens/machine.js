@@ -13,6 +13,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native'
+import StoppagesComponent from './components/StoppagesComponent'
 
 import React, { useState, useEffect } from 'react'
 import Timeline from 'react-native-timeline-flatlist'
@@ -23,7 +24,7 @@ import axios from 'axios'
 import MachineTimetableRow from './machineRow'
 import StoppageComp from './stoppages/stoppageComp'
 import io from 'socket.io-client'
-import ShiftsComp from './shiftsComp'
+import ShiftsComp from './components/shiftsComp'
 
 const baseUrl = 'http://gounane.ovh:8000/api/v1'
 
@@ -37,6 +38,7 @@ export default function Machine({ navigation }) {
   const [product, setProduct] = useState({})
   // const [products, setProducts] = useState([])
   const [stoppages, setStoppages] = useState([])
+  const [failures, setFailures] = useState([])
   // const [zone, setZone] = useState({})
   // const [device, setDevice] = useState({})
   // const [topics, setTopics] = useState({})
@@ -61,8 +63,9 @@ export default function Machine({ navigation }) {
   // const MachineId = null;
   const MachineId = navigation.getParam('id')
   useEffect(() => {
+    const FmachineId = '644735bcc10b778be78297a8'
     const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MjY4Mzk1NiwiZXhwIjoxNjg1Mjc1OTU2fQ.Ym0TWyG9Ql_Tm5ceRVJXPl2Dm1C1Y1Tq1d9cFARUREk'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4NDMyNzMxNywiZXhwIjoxNjg2OTE5MzE3fQ.dn9roQGTef2W5JaGQmgh_xSEi6NpCgF8A1vo86iicKk'
 
     //******************  get products ****************
     // axios
@@ -110,8 +113,8 @@ export default function Machine({ navigation }) {
     const currentMinute = now.getUTCMinutes()
 
     //      -----------------  main Coup component table -----------------
-    const HoursWithCoups = Hours;
-    
+    const HoursWithCoups = Hours
+
     axios
       .get(
         `${baseUrl}/machines/${MachineId}/coups?start=${formattedDate}&end=${formattedNextDay}`,
@@ -144,7 +147,7 @@ export default function Machine({ navigation }) {
             coup: item.coups_min,
           })
           return acc
-        }, Hours);
+        }, Hours)
         //           coloring minutes with no data
         HoursWithCoups.forEach(hour => {
           hour.minutes.forEach(minute => {
@@ -236,13 +239,13 @@ export default function Machine({ navigation }) {
         })
 
         return () => {
-          socket.disconnect();
+          socket.disconnect()
         }
         ////////////////////////////////////
       })
       .catch(error => {
         console.log('no data today ===>', error)
-                  // coloring minutes with no data
+        // coloring minutes with no data
         HoursWithCoups.forEach(hour => {
           hour.minutes.forEach(minute => {
             if (minute.coups.length === 0) {
@@ -252,7 +255,7 @@ export default function Machine({ navigation }) {
             }
           })
         })
-        setTimeLineData(HoursWithCoups);
+        setTimeLineData(HoursWithCoups)
       })
 
     //    ************get shift of machine with {{URI}}/shifts?machines=644735bcc10b778be78297a1&days=Mo ******************
@@ -289,11 +292,27 @@ export default function Machine({ navigation }) {
     //   console.log(error)
     // }
     // );
+
+    //******************  get failures ****************
+    console.log('fetching failures')
+    axios
+      .get(
+        `${baseUrl}/machine-failures?machine=644735bcc10b778be78297a8`,
+        //send jwt token in header
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      .then(response => {
+        console.log(response.data.data.machinefailures)
+        setFailures(response.data.data.machinefailures)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }, [])
 
   //       product changing handler for modal
   const handleModalPress = () => {
-    setModalVisible(true);
+    setModalVisible(true)
   }
   return (
     <ScrollView style={styles.container}>
@@ -396,6 +415,20 @@ export default function Machine({ navigation }) {
           </View>
         </Modal>
       </TouchableWithoutFeedback>
+      <View
+              style={{
+                //margin
+                marginVertical: 20,
+                width: width / 10,
+              }}
+            >
+              <StoppagesComponent
+                //machine id
+                mId={MachineId}
+                failures={failures}
+              />
+            </View>
+
 
       <View>
         <View style={styles.timeLine}>
@@ -411,7 +444,19 @@ export default function Machine({ navigation }) {
             >
               TimeLine Chart
             </Text>
-
+            <View
+              style={{
+                //margin
+                // marginVertical: 20,
+                width: width / 10,
+              }}
+            >
+              {/* <StoppagesComponent
+                //machine id
+                mId={MachineId}
+                failures={failures}
+              /> */}
+            </View>
             {/* <ShiftsComp /> */}
 
             <MachineTimetableRow TimeLineData={TimeLineData} />
@@ -461,13 +506,13 @@ const styles = StyleSheet.create({
   },
   timeLine: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 10,
   },
   timeLineContainer: {
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#fff',
-    marginTop: 50,
+    marginTop: 10,
     borderRadius: 30,
     padding: 2,
     //shadow

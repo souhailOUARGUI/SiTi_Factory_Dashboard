@@ -68,7 +68,7 @@ const MachineStats = ({ navigation }) => {
   useEffect(() => {
     // console.log('useEffect');
     const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4MjY4Mzk1NiwiZXhwIjoxNjg1Mjc1OTU2fQ.Ym0TWyG9Ql_Tm5ceRVJXPl2Dm1C1Y1Tq1d9cFARUREk'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDczNWI5YzEwYjc3OGJlNzgyOTc4MSIsImlhdCI6MTY4NDMyNzMxNywiZXhwIjoxNjg2OTE5MzE3fQ.dn9roQGTef2W5JaGQmgh_xSEi6NpCgF8A1vo86iicKk'
     axios
       .get(
         `${baseUrl}/machines`,

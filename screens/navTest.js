@@ -7,7 +7,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  ScrollView,
+  ScrollView,Button,
   Pressable,
 } from 'react-native'
 
@@ -38,8 +38,10 @@ import { log, min } from 'react-native-reanimated'
 import { Use } from 'react-native-svg'
 import axios from 'axios'
 import { io } from 'socket.io-client'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const NavTest = ({ navigation }) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [socketData, setSocketData] = useState([])
 
   // useEffect(() => {
@@ -96,6 +98,38 @@ const NavTest = ({ navigation }) => {
       >
         Operators
       </Text>
+      { showDatePicker &&  <DateTimePicker
+      value={new Date()} // Replace with the initial date value if needed
+      mode="time"
+      display="default"
+      positiveButton={true}
+      style={{
+        width: 200,
+        height: 200,
+        backgroundColor: 'red',
+      }}
+      onChange={(event, selectedDate) => {
+        setShowDatePicker(false);
+        console.log(selectedDate);
+
+      }}
+      
+      
+      >
+      
+      </DateTimePicker> }
+      <Button
+        title="show date picker"
+        onPress={() => {
+          setShowDatePicker(true);
+          
+        }}
+        
+      >  
+      
+      </Button>
+
+
       {/* <View 
             style={{
               shadowOffset: {width: 10, height: 10},

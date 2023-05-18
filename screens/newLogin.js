@@ -29,7 +29,6 @@ const NewLogin = ({ navigation }) => {
     email: 'super_admin@siti.com',
     password: 'sititea1234',
   }
-
   //   ***************** states *****************
   const [email, setEmail] = useState('')
   const [pass, setPass] = useState('')
@@ -253,12 +252,12 @@ const NewLogin = ({ navigation }) => {
             {/* textinputs for email and password  */}
             <View
               style={{
-                width: width - 25,
+                width: width - 40,
                 height: 50,
                 backgroundColor: 'white',
                 borderRadius: 10,
                 marginBottom: 10,
-                marginTop: '20%',
+                // marginTop: '%',
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingHorizontal: 10,
@@ -293,7 +292,7 @@ const NewLogin = ({ navigation }) => {
 
             <View
               style={{
-                width: width - 25,
+                width: width - 40,
                 height: 50,
                 backgroundColor: 'white',
                 borderRadius: 10,
@@ -358,7 +357,7 @@ const NewLogin = ({ navigation }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                width: width - 18,
+                width: width - 40,
                 height: 50,
                 marginBottom: 5,
                 paddingHorizontal: 5,
@@ -467,7 +466,7 @@ const NewLogin = ({ navigation }) => {
             <Pressable
               onPress={loginHandler}
               style={{
-                marginTop: 10,
+                marginTop: '20%',
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 12,
